@@ -25,6 +25,7 @@ class Menu(Registry):
         self.css_class = kwargs.pop('css_class', None)
         self.template = kwargs.pop('template', 'navutils/menu.html')
         self.context = kwargs.pop('context', {})
+        self.dynamic_nodes = kwargs.pop('dynamic_nodes', False)  # potential for purely dynamic nodes
         super(Menu, self).__init__(*args, **kwargs)
 
     def prepare_name(self, data, name=None):
