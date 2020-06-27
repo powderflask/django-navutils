@@ -39,8 +39,8 @@ class Node(object):
     parent = None
 
     def __init__(self, id, label, pattern_name=None, url=None, divider=False, weight=0, title=None,
-                 template='navutils/node.html', children=[], css_class=None, submenu_css_class=None,
-                 reverse_kwargs=[], attrs={}, link_attrs={}, context={}, **kwargs):
+                 template='navutils/node.html', children=None, css_class=None, submenu_css_class=None,
+                 reverse_kwargs=None, attrs=None, link_attrs=None, context=None, **kwargs):
         """
         :param str id: a unique identifier for further retrieval
         :param str label: a label for the node, that will be displayed in templates
@@ -82,15 +82,18 @@ class Node(object):
         self.weight = weight
         self.template = template
         self.css_class = css_class
-        self.reverse_kwargs = reverse_kwargs
-        self.link_attrs = link_attrs
-        self.attrs = attrs
-        self.context = context
+        self.reverse_kwargs = reverse_kwargs or []
+        self.link_attrs = link_attrs or {}
+        if title:
+            self.link_attrs['title'] = title
+        self.attrs = attrs or {}
+        self.context = context or {}
         self.kwargs = kwargs
 
         if 'class' in self.attrs:
             raise ValueError('CSS class is handled via  the css_class argument, don\'t use attrs for this purpose')
 
+        children = children or []
         self._children = children
 
         if not hasattr(self._children, '__call__'):
