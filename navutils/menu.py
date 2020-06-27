@@ -34,6 +34,11 @@ class Menu(Registry):
         context.update(self.context)
         return context
 
+    def get_node(self, id):
+        """ Return node from this menu with the given id, or None """
+        # TODO: finish algorithm - traverse tree in search of node
+        return self.get(id) or None
+
 class Node(object):
 
     parent = None
