@@ -17,17 +17,20 @@ def render_menu(context, menu, **kwargs):
 
     max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
     viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user, context)]
-    if not viewable_nodes:
+    if not viewable_nodes and not menu.dynamic_nodes:   # purely dynamic menu may have not have static nodes
         return ''
 
+    current_menu_item = kwargs.get('current_menu_item', context.get('current_menu_item'))
+    current_node = menu.get_node(current_menu_item)
     t = template.loader.get_template(menu.template)
     c = {
         'menu': menu,
         'viewable_nodes': viewable_nodes,
         'user': user,
         'max_depth': max_depth,
-        'current_menu_item': kwargs.get('current_menu_item', context.get('current_menu_item')),
-        'menu_config': settings.NAVUTILS_MENU_CONFIG
+        'current_menu_item': current_menu_item,
+        'current_menu_node': current_node,
+        'menu_config': settings.NAVUTILS_MENU_CONFIG,
     }
     context.update(c)
     final_context = menu.get_context(context)
