@@ -92,6 +92,7 @@ class Node(object):
         self.link_attrs = link_attrs or {}
         if title:
             self.link_attrs['title'] = title
+        self.submenu_css_class = submenu_css_class
         self.attrs = attrs or {}
         self.context = context or {}
         self.kwargs = kwargs
