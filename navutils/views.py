@@ -1,6 +1,6 @@
+from django.views.generic.base import ContextMixin
 
-
-class MenuMixin(object):
+class MenuMixin(ContextMixin):
     current_menu_item = None
 
     def get_current_menu_item(self):

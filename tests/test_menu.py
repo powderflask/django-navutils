@@ -2,8 +2,9 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser, Permission
 from django.test.client import RequestFactory
+from django.views.generic.base import ContextMixin
 
-from navutils import menu
+from navutils import menu, views
 from navutils.templatetags import navutils_tags
 
 User = get_user_model()
@@ -434,6 +435,18 @@ class MenuMixinTest(BaseTestCase):
     def test_set_current_menu_item_in_context(self):
         response = self.client.get('/')
         self.assertEqual(response.context['current_menu_item'], 'test:index')
+
+    def test_multi_inheritance_context(self):
+        """ Regression test: assure MenuMixin context set in multi-inheritance structure """
+        class OtherMixin(ContextMixin):
+            def get_context_data(self, **kwargs):
+                return super().get_context_data(my_context='other mixin context', **kwargs)
+
+        class ConcreteView(OtherMixin, views.MenuMixin):
+            current_menu_item = 'Concrete View'
+
+        context = ConcreteView().get_context_data()
+        self.assertIn('current_menu_item', context.keys())
 
 
 class RenderMenuTest(BaseTestCase):
