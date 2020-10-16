@@ -3,6 +3,12 @@ from navutils import settings
 
 register = template.Library()
 
+def get_user(context, **kwargs):
+    """ Return the user object from the context or kwargs, or raise a ValueError if not found """
+    user = kwargs.get('user', context.get('user', getattr(context.get('request', object()), 'user', None)))
+    if not user:
+        raise ValueError('missing user parameter')
+    return user
 
 @register.simple_tag(takes_context=True)
 def render_menu(context, menu, **kwargs):
@@ -11,9 +17,7 @@ def render_menu(context, menu, **kwargs):
     # if not menu:
     #     raise ValueError('Missing menu argument')
 
-    user = kwargs.get('user', context.get('user', getattr(context.get('request', object()), 'user', None)))
-    if not user:
-        raise ValueError('missing user parameter')
+    user = get_user(context, **kwargs)
 
     max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
     viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user, context)]
@@ -46,10 +50,7 @@ def render_node(context, node, **kwargs):
     # if not node:
     #     raise ValueError('Missing node argument')
 
-
-    user = kwargs.get('user', context.get('user', getattr(context.get('request', object()), 'user', None)))
-    if not user:
-        raise ValueError('missing user parameter')
+    user = get_user(context, **kwargs)
 
     if not node.is_viewable_by(user, context):
         return ''
@@ -111,3 +112,23 @@ def render_nested(context, template_text):
     # create template from text
     tpl = template.Template(template_text)
     return tpl.render(context)
+
+
+@register.simple_tag(takes_context=True)
+def render_node_url(context, node, **kwargs):
+    """ renders just the url for a node so it's link can be rendered in context from outside a menu """
+    user = get_user(context, **kwargs)
+
+    if not node.is_viewable_by(user, context):
+        return ''
+
+    c = {
+        'node': node,
+    }
+    try:
+        final_context = node.get_context({**context, **c})
+    except TypeError:
+        # Django 2.0+
+        final_context = node.get_context({**context.flatten(), **c})
+    return final_context['node'].get_url()
+
