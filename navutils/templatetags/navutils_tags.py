@@ -26,7 +26,8 @@ def render_menu(context, menu, **kwargs):
 
     current_menu_item = kwargs.get('current_menu_item', context.get('current_menu_item'))
     current_node = menu.get_node(current_menu_item)
-    t = template.loader.get_template(menu.template)
+    tpl = kwargs.get('template', menu.template)
+    t = template.loader.get_template(tpl)
     c = {
         'menu': menu,
         'viewable_nodes': viewable_nodes,
@@ -59,6 +60,7 @@ def render_node(context, node, **kwargs):
     max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
     start_depth = kwargs.get('start_depth', context.get('start_depth', node.depth))
     current_depth = kwargs.get('current_depth', context.get('current_depth', node.depth - start_depth))
+    tpl = kwargs.get('template', node.template)
 
     viewable_children = []
     if current_depth + 1 <= max_depth:
@@ -66,7 +68,7 @@ def render_node(context, node, **kwargs):
             if child.is_viewable_by(user, context):
                 viewable_children.append(child)
 
-    t = template.loader.get_template(node.template)
+    t = template.loader.get_template(tpl)
 
     c = {
         'is_current': node.is_current(current),
