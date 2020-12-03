@@ -14,8 +14,11 @@ def get_user(context, **kwargs):
 def render_menu(context, menu, **kwargs):
 
     # menu = kwargs.get('menu', context.get('menu'))
-    # if not menu:
-    #     raise ValueError('Missing menu argument')
+    if not hasattr(menu, 'values'):
+        if settings.settings.DEBUG:
+            tpl = template.Template('<h3><span class="label label-danger">NO MENU</span></h3>')
+            return tpl.render(context)
+        raise ValueError('Missing menu argument')
 
     user = get_user(context, **kwargs)
 
