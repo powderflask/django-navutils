@@ -54,19 +54,18 @@ class Node(object):
         as a link for the node. It will be automatically reversed.
         :param str url: a URL to use as a link for the node
         :parma bool divider: node is a divider - url and pattern_name are ignored; could be header if label is provided
-        :param int weight: The importance of the node. Higher is more\
-        important, default to ``0``.
-        :param list reverse_kwargs: A list of strings that the pattern_name will\
+        :param int weight: The importance of the node. Higher is more important, default to ``0``.
+        :param list reverse_kwargs: A list of strings that the pattern_name will
         accept when reversing. Defaults to ``[]``
-        :param list children: A list of children :py:class:`Node` instances\
-        that will be considered as submenus of this instance.\ You can also pass\
+        :param list children: A list of children :py:class:`Node` instances
+        that will be considered as submenus of this instance. You can also pass
         a callable that will return an iterable of menu nodes.
         Defaults to ``[]``.
         :param str css_class: a CSS class that will be applied to the node when
         rendering
         :param str submenu_css_class: a CSS class that will be applied to any
         submenu's in the node when rendering
-        :param str template: the template that will be used to render the node.\
+        :param str template: the template that will be used to render the node.
         defaults to `navutils/menu/node.html`
         :param dict node_attrs: a dictionnary of attributes to apply to the node
         html
@@ -120,8 +119,8 @@ class Node(object):
 
     def get_url(self, **kwargs):
         """
-        :param kwargs: a dictionary of values that will be used for reversing,\
-        if the corresponding key is present in :py:attr:`self.reverse_kwargs\
+        :param kwargs: a dictionary of values that will be used for reversing,
+        if the corresponding key is present in :py:attr:`self.reverse_kwargs
         <Node.reverse_kwargs>`
         :return: The target URL of the node, after reversing (if needed)
         """
