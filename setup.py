@@ -41,7 +41,10 @@ setup(
         ],
     },
     include_package_data=True,
-    install_requires=['persisting_theory'],
+    install_requires=[
+        'Django>=3.2, <5.0',
+        'persisting_theory',
+    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
@@ -51,8 +54,8 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Framework :: Django :: 1.7',
-        'Framework :: Django :: 1.8',
+        'Framework :: Django :: 3.2',
+        'Framework :: Django :: 4.2',
         'Topic :: Utilities',
     ],
 )
