@@ -1,3 +1,7 @@
+0.8 (??/??/2023):
+- Drop support for unsupported Dj and Py versions
+- Add support for Dj4.x
+
 0.7 (22/02/2019):
 
 - Allow for empty URL value (#11 by @wgordon17)
