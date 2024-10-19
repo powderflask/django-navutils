@@ -143,7 +143,6 @@ class Node(object):
         self._children = sorted(
             self._children,
             key=lambda i: i.weight,
-            reverse=True
         )
 
     def is_viewable_by(self, user, context={}):
