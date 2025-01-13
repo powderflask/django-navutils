@@ -130,7 +130,7 @@ class Node(object):
                 if key in self.reverse_kwargs
             }
             return reverse(self.pattern_name, kwargs=expected_kwargs)
-        return self.url
+        return self.url() if callable(self.url) else self.url
 
     def add(self, node):
         """
